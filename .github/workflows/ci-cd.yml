@@ -4,28 +4,28 @@ on:
   push:
     branches: [main]
 
-job:
-  build and push:
+jobs:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set Up Python
-        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install Python Dependencies
+      - name: Install Python dependencies
         run: |
           pip install -r app/requirements.txt
 
-      - name: Build The Docker Image
+      - name: Build Docker image
         run: |
           docker build -t sachinviru/url-mini:${{ github.sha }} .
 
-      - name: Login To Docker Hub
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
@@ -44,6 +44,4 @@ job:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
-        
 
-        
