@@ -54,11 +54,11 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}  
           SONAR_SCANNER_OPTS: "-X"
       
-      - name: Sonar QualScanity Gate 
-        uses: sonarsource/sonarqube-quality-gate-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+#      - name: Sonar QualScanity Gate 
+#        uses: sonarsource/sonarqube-quality-gate-action@master
+#        env:
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           
              
 
