@@ -27,10 +27,29 @@ jobs:
           echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
           echo "version=v$(git rev-list --count)" >>$GITHUB_OUTPUT
 
+      - name: Scan the code using SonarQube
+        uses: sonarsource/sonarqube-scan-action@v1.0.0
+        with:
+          projectBaseDir: .
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}  
+          SONAR_SCANNER_OPTS: "-X"
+    
       - name: Build Docker image
         run: |
           docker build -t sachinviru/url-mini:${{ steps.vars.outputs.version }} .
           docker tag sachinviru/url-mini:${{ steps.vars.outputs.version }} sachinviru/url-mini:latest
+
+      - name: Scan image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: sachinviru/url-mini:${{ steps.vars.outputs.version }}
+          format: 'table'
+          exit-code: '0'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'          
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -42,25 +61,6 @@ jobs:
         run: |
           docker push sachinviru/url-mini:${{ steps.vars.outputs.version }}
           docker push sachinviru/url-mini:latest
-
-      - name: Scan image with Trivy
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: sachinviru/url-mini:${{ steps.vars.outputs.version }}
-          format: 'table'
-          exit-code: '0'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
-
-      - name: Scan the code using SonarQube
-        uses: sonarsource/sonarqube-scan-action@v1.0.0
-        with:
-          projectBaseDir: .
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}  
-          SONAR_SCANNER_OPTS: "-X"
 
       - name: Prune old Docker tags (keep last 3)
         uses: devcontainers/ci@v0.3
