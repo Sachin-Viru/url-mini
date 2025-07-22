@@ -19,11 +19,18 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          pip install -r app/requirements.txt
+          pip install -r app/requirements.txt 
+
+      - name: Get version and short SHA
+        id: vars
+        run: |
+          echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          echo "version=v$(git rev-list --count)" >>$GITHUB_OUTPUT
 
       - name: Build Docker image
         run: |
-          docker build -t sachinviru/url-mini:${{ github.sha }} .
+          docker build -t sachinviru/url-mini:${{ steps.vars.outputs.version }} .
+          docker tag sachinviru/url-mini:${{ steps.vars.outputs.version }} sachinviru/url-mini:latest
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -33,12 +40,13 @@ jobs:
 
       - name: Push Docker image to Docker Hub
         run: |
-          docker push sachinviru/url-mini:${{ github.sha }}
+          docker push sachinviru/url-mini:${{ steps.vars.outputs.version }}
+          docker push sachinviru/url-mini:latest
 
       - name: Scan image with Trivy
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: sachinviru/url-mini:${{ github.sha }}
+          image-ref: sachinviru/url-mini:${{ steps.vars.outputs.version }}
           format: 'table'
           exit-code: '0'
           ignore-unfixed: true
@@ -53,7 +61,16 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}  
           SONAR_SCANNER_OPTS: "-X"
-      
+
+      - name: Prune old Docker tags (keep last 3)
+        uses: bots-house/dockerhub-tags-prune-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: sachinviru/url-mini
+          keep: 3
+
+
 #      - name: Sonar QualScanity Gate 
 #        uses: sonarsource/sonarqube-quality-gate-action@master
 #        env:
