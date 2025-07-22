@@ -63,7 +63,7 @@ jobs:
           SONAR_SCANNER_OPTS: "-X"
 
       - name: Prune old Docker tags (keep last 3)
-        uses: bots-house/dockerhub-tags-prune-action@v1
+        uses: otwld/dockerhub-tag-cleanup
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
