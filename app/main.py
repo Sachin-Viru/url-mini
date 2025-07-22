@@ -1,16 +1,23 @@
-# Test CI trigger
-from flask import Flask, jsonify
+from flask import Flask
+from prometheus_client import generate_latest, Counter, Histogram
+from prometheus_client import CONTENT_TYPE_LATEST
 
 app = Flask(__name__)
 
-@app.route("/")
+# Sample metric (optional)
+REQUEST_COUNT = Counter('request_count', 'Total number of requests')
+REQUEST_LATENCY = Histogram('request_latency_seconds', 'Request latency')
+
+@app.route('/')
 def home():
-    return jsonify(message="Welcome to URL Mini App!")
+    REQUEST_COUNT.inc()
+    with REQUEST_LATENCY.time():
+        return "Hello from URL Shortener!"
 
-@app.route("/health")
-def health():
-    return jsonify(status="healthy")
+# ✅ This is the important part
+@app.route('/metrics')
+def metrics():
+    return generate_latest(), 200, {'Content-Type': CONTENT_TYPE_LATEST}
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
-
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
