@@ -63,12 +63,12 @@ jobs:
           SONAR_SCANNER_OPTS: "-X"
 
       - name: Prune old Docker tags (keep last 3)
-        uses: devcontainers/ci@v0.3
+        uses: sindrets/delete-docker-tag-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: sachinviru/url-mini
-          keep-last: 3
+          keep: 3
 
 
 #      - name: Sonar QualScanity Gate 
