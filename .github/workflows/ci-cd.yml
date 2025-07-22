@@ -63,13 +63,13 @@ jobs:
           SONAR_SCANNER_OPTS: "-X"
 
       - name: Prune old Docker tags (keep last 3)
-        uses: phillbaker/dockerhub-tag-cleanup@v1
+        uses: joshbeard/hub-tag-delete@v1
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: sachinviru/url-mini
-          keep: 3
-          untagged_only: false
+          dockerhub_username: ${{ secrets.DOCKER_USERNAME }}
+          dockerhub_password: ${{ secrets.DOCKER_PASSWORD }}
+          dockerhub_repository: sachinviru/url-mini
+#          keep: 3
+#          untagged_only: false
 
 
 #      - name: Sonar QualScanity Gate 
