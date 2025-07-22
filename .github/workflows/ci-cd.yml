@@ -62,13 +62,13 @@ jobs:
           docker push sachinviru/url-mini:${{ steps.vars.outputs.version }}
           docker push sachinviru/url-mini:latest
 
-      - name: Prune old Docker tags (keep last 3)
-        uses: devcontainers/ci@v0.3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: sachinviru/url-mini
-          keep-last: 3
+#      - name: Prune old Docker tags (keep last 3)
+#        uses: devcontainers/ci@v0.3
+#        with:
+#          username: ${{ secrets.DOCKER_USERNAME }}
+#          password: ${{ secrets.DOCKER_PASSWORD }}
+#          repository: sachinviru/url-mini
+#          keep-last: 3
 
 
 #      - name: Sonar QualScanity Gate 
