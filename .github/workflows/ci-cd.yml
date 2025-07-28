@@ -29,19 +29,21 @@ jobs:
 
       - name: Scan the code using SonarQube
         uses: sonarsource/sonarqube-scan-action@v1.0.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} 
         with:
           projectBaseDir: .
-          args: >
+          args: |
             -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
             -Dsonar.projectKey=url-mini
             -Dsonar.projectName="URL Mini Shortener"
             -Dsonar.projectVersion=${{ steps.vars.outputs.version }}
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}    
-
-    
+            -Dsonar.sources=app
+            -Dsonar.sourceEncoding=UTF-8
+            -Dsonar.python.version=3.11
+         
       - name: Build Docker image
         run: |
           docker build -t sachinviru/url-mini:${{ steps.vars.outputs.version }} .
