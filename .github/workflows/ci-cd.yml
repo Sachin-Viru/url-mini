@@ -34,8 +34,9 @@ jobs:
           args: >
             -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-            -Dsonar.projectKey=YOUR_PROJECT_KEY
-            -Dsonar.projectName="url-mini"
+            -Dsonar.projectKey=url-mini
+            -Dsonar.projectName="URL Mini Shortener"
+            -Dsonar.projectVersion=${{ steps.vars.outputs.version }}
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}    
