@@ -4,3 +4,4 @@ THere is issue in connected to local sonarqube server as git-hub can't reach it 
 the issue 
 THis is git-hub actions 
 its spins its won server 
+will add more detail in this readme file also shell scripts 
