@@ -99,4 +99,9 @@ The following secrets must be configured in your repository:
 ```txt
 sachinviru/url-mini
 
+## 🏷️ Tags Generated
+
+```txt
+v<commit-count>
+latest
 
