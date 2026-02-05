@@ -94,14 +94,28 @@ The following secrets must be configured in your repository:
 ---
 
 ## 🐳 Docker Image Details
+Docker Images:  
+- `sachinviru/url-mini:v12`  
+- `sachinviru/url-mini:latest`
 
-**Repository**:
-```txt
-sachinviru/url-mini
+---
 
-## 🏷️ Tags Generated
+## 🚧 Optional / Future Enhancements
 
-```txt
-v<commit-count>
-latest
-```
+The pipeline includes commented steps for:  
+- Docker tag cleanup (keep last 3 images)  
+- SonarQube Quality Gate enforcement  
+
+These can be enabled as needed.
+
+---
+
+## ✅ Summary
+
+This CI/CD pipeline ensures:  
+- Automated quality checks  
+- Secure container images  
+- Consistent versioning  
+- Reliable Docker image publishing  
+
+All with **zero manual intervention** 🚀
