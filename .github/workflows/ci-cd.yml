@@ -38,7 +38,7 @@ jobs:
             -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
             -Dsonar.projectKey=url-mini
-            -Dsonar.projectName="URL Mini Shortener"
+            -Dsonar.projectName="URL-Mini-Shortener"
             -Dsonar.projectVersion=${{ steps.vars.outputs.version }}
             -Dsonar.sources=app
             -Dsonar.sourceEncoding=UTF-8
